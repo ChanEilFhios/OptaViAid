@@ -14,6 +14,7 @@ import { connect } from 'pwa-helpers/connect-mixin.js';
 import { installOfflineWatcher } from 'pwa-helpers/network.js';
 import { installRouter } from 'pwa-helpers/router.js';
 import { updateMetadata } from 'pwa-helpers/metadata.js';
+import { offlineIcon, onlineIcon } from './my-icons.js';
 
 // This element is connected to the Redux store.
 import { store } from '../store.js';
@@ -43,6 +44,10 @@ class MyApp extends connect(store)(LitElement) {
 
       header {
         grid-area: header;
+        display: flex;
+        align-items: center;
+        padding-left: 0.25em;
+        border-bottom: 1px solid #ccc;
       }
       
       header > h1 {
@@ -51,13 +56,14 @@ class MyApp extends connect(store)(LitElement) {
       
       nav {
         grid-area: nav;
+        background-color: #ccc;
       }
 
       .toolbar-list > a {
         display: inline-block;
         color: black;
         text-decoration: none;
-        padding: 0 8px;
+        margin-left: 0.25em;
       }
 
       .toolbar-list > a[selected] {
@@ -81,8 +87,9 @@ class MyApp extends connect(store)(LitElement) {
 
       footer {
         border-top: 1px solid #ccc;
-        text-align: center;
         grid-area: footer;
+        display: flex;
+        flex-direction: row-reverse;
       }
 
       /* Wide layout */
@@ -99,7 +106,25 @@ class MyApp extends connect(store)(LitElement) {
         nav {
           writing-mode: vertical-lr;
         }
+        
+        .toolbar-list > a {
+          margin-left: 0;
+          margin-top: 0.25em;
+        }
       }
+      
+      .overlayIcon {
+        position: relative;
+        display: inline-block;
+        width: 24px
+      }
+      
+      .iconOverlay {
+        position: absolute;
+        left: 4px;
+        top: 10px;
+      }
+
     </style>
 
     <header>
@@ -107,17 +132,19 @@ class MyApp extends connect(store)(LitElement) {
     </header>
 
     <nav class="toolbar-list">
-      <a selected?="${_page === 'view1'}" href="/view1">View One</a>
+      <a selected?="${_page === 'logs'}" href="/logs">Logs</a>
+      <a selected?="${_page === 'daily'}" href="/daily">Daily</a>
     </nav>
 
     <!-- Main content -->
     <main role="main" class="main-content">
-      <my-view1 class="page" active?="${_page === 'view1'}"></my-view1>
+      <log-view class="page" active?="${_page === 'logs'}"></log-view>
+      <daily-log class="page" active?="${_page === 'daily'}"></daily-log>
       <my-view404 class="page" active?="${_page === 'view404'}"></my-view404>
     </main>
 
     <footer>
-      You are now ${_offline ? 'offline' : 'online'}.</snack-bar>
+      ${_offline ? offlineIcon : onlineIcon}
     </footer>`
   }
 
