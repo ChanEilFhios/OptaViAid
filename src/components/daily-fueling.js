@@ -1,4 +1,5 @@
 import { LitElement, html } from '@polymer/lit-element';
+import { clock } from './my-icons.js';
 
 const fuelingColor = '#2E578D';
 
@@ -23,19 +24,29 @@ class DailyFueling extends LitElement {
           color: #2E578D44;
         }
         
-        div > input {
+        input[type="time"] {
           margin-left: 0.25em;
           border: none;
         }
+        
+        button {
+          padding: 0;
+          border: none;
+          background: transparent;
+        }
       </style>
       
-      <div id="${id}">${this.index}<input min="00:00" max="24:00" type="time" value="${this.time}" /></div>
+      <div id="${id}">${this.index}<input on-change="${(e) => this._checkChanged(e)}" min="00:00" max="24:00" type="time" value="${this.time}" /><button on-click="${() => this._setTime()}">${clock}</button></div>
     `;
   }
   
-  _checkChanged(...args) {
-    this.time = new Date().toLocaleTimeString().match(/(\d\d:\d\d)(?::\d\d)?( AM|PM)?/).slice(1,3).join('');
-    this.dispatchEvent(new CustomEvent('change', {detail: {originalArgs: args, fueling: this}}))
+  _setTime() {
+    this.time = new Date().toTimeString().match(/^\d\d:\d\d/)[0]
+  }
+  
+  _checkChanged(e) {
+    this.time = e.target.value;
+    this.dispatchEvent(new CustomEvent('change', {detail: {originalEventArgs: e, fueling: this}}))
   }
 
   static get properties() { return {
