@@ -6,10 +6,19 @@ import { SharedStyles } from './shared-styles.js';
 
 // These are the components used by this page.
 import * as dailyFueling from './daily-fueling.js';
+import * as timeStamp from './time-stamp.js';
 
 class DailyLog extends PageViewElement {
   _fuelingChanged(e) {
-    console.log('fuelingChanged', e);
+    console.log('fuelingChanged', e.detail);
+  }
+  
+  _leanChanged(e) {
+    console.log('leanChanged', e.detail);
+  }
+  
+  _greenChanged(e) {
+    console.log('greenChanged', e.detail);
   }
   
   _render(props) {
@@ -81,7 +90,7 @@ class DailyLog extends PageViewElement {
             Lean and Green Meal:
           </legend>
           <fieldset id="leanpart">
-            <legend>Lean:<input type="time" id="leantime" /></legend>
+            <legend>Lean: <time-stamp on-change="${(e) => this._leanChanged(e)}"></time-stamp></legend>
             <label for="leanest">
               <input type="radio" id="leanest" name="lean" />
               Leanest
@@ -97,7 +106,7 @@ class DailyLog extends PageViewElement {
           </fieldset>
           
           <fieldset id="greenpart">
-            <legend>Green:<input type="time" id="greentime" />
+            <legend>Green: <time-stamp on-change="${(e) => this._greenChanged(e)}"></time-stamp>
           </fieldset>
         </fieldset>
         
