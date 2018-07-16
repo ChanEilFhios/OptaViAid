@@ -1,32 +1,15 @@
 import { LitElement, html } from '@polymer/lit-element';
 import * as TimeStamp from './time-stamp.js';
-import { clock } from './my-icons.js';
-
-const fuelingColor = '#2E578D';
+import { SharedStyles } from './shared-styles.js';
 
 class DailyFueling extends LitElement {
   _render(props) {
     const id = `fueling${this.index}`;
     
     return html`
-      <style>
-        div {
-          font-size: 16px;
-          cursor: pointer;
-          
-          margin: 0.25em;
-          padding: 0.25em;
+      ${SharedStyles}
 
-          border: 2px solid black;
-          border-color: #2E578D;
-          border-radius: 0.5em;
-          
-          background-color: white;
-          color: #2E578D44;
-        }
-      </style>
-      
-      <div id="${id}">${this.index}<time-stamp time="${this.time}" on-change="${(e) => this._timeChanged(e)}"></time-stamp></div>
+      <div class="logPill fueling" id="${id}">${this.index}<time-stamp time="${this.time}" on-change="${(e) => this._timeChanged(e)}"></time-stamp></div>
     `;
   }
   
